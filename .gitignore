@@ -1,0 +1,10 @@
+# Arquivos locais e credenciais
+.env
+.env.*
+!.env.example
+node_modules/
+*.log
+.DS_Store
+Thumbs.db
+
+# Os arquivos em dist/ são a fonte estática e devem permanecer versionados.

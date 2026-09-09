@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#102c40">
+  <meta name="description" content="HopeLeaf: engajamento no Ensino Médio e inteligência pedagógica antes das provas. Proposta de implantação em seis meses.">
+  <title>HopeLeaf — Inteligência pedagógica antes da prova</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;650;700;750;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #102c40; --ink: #183649; --muted: #526673;
+      --paper: #f8faf9; --line: #d6e1df; --mint: #b5f3d5;
+      --green: #24654f; --orange: #bd481f; --peach: #ffe4d7;
+      --gutter: clamp(24px, 5vw, 88px);
+      font-family: 'Inter', Arial, sans-serif; color: var(--ink);
+      font-synthesis: none; text-rendering: optimizeLegibility;
+    }
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; }
+    body { background: var(--paper); -webkit-font-smoothing: antialiased; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button { font: inherit; cursor: pointer; }
+    a { color: inherit; text-underline-offset: 4px; }
+    button:focus-visible, a:focus-visible, [tabindex]:focus-visible {
+      outline: 3px solid #d55b29; outline-offset: 5px;
+    }
+    button:disabled { cursor: default; opacity: .36; }
+    p, h1, h2, h3, ol { margin: 0; }
+    h1, h2, h3 { text-wrap: balance; }
+    p { text-wrap: pretty; }
+    .deck {
+      width: 100vw; height: 100vh; height: 100dvh; overflow: hidden;
+      display: grid; grid-template-rows: 76px minmax(0, 1fr) 86px;
+      transition: background .35s, color .35s;
+    }
+    .deck.dark { background: var(--navy); color: white; }
+    .topbar {
+      padding: max(16px, env(safe-area-inset-top)) var(--gutter) 16px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 20px; border-bottom: 1px solid var(--line);
+    }
+    .brand { font-weight: 750; font-size: 24px; letter-spacing: -1.2px; }
+    .brand span { color: var(--green); }
+    .dark .brand span { color: var(--mint); }
+    .topbar small { font-size: 11px; font-weight: 550; letter-spacing: 1.6px; text-transform: uppercase; }
+    .dark .topbar, .dark .controls { border-color: #3a5262; }
+    .stage { position: relative; min-height: 0; overflow: hidden; overflow: clip; }
+    .slide {
+      position: absolute; inset: 0; padding: clamp(24px, 4vh, 48px) var(--gutter);
+      overflow: hidden; opacity: 0; visibility: hidden; transform: translateX(22px);
+      transition: opacity .32s ease, transform .38s ease, visibility .38s;
+    }
+    .slide.active { opacity: 1; visibility: visible; transform: none; z-index: 1; }
+    .slide-inner {
+      width: 100%; height: 100%; max-width: 1600px; margin: auto;
+      display: flex; flex-direction: column; gap: clamp(22px, 3.4vh, 38px);
+      overflow: auto; scrollbar-width: thin; scrollbar-color: #9aafa8 transparent;
+    }
+    .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); margin-bottom: 14px; }
+    .dark .eyebrow { color: var(--mint); }
+    h1 { font-size: clamp(44px, 5.3vw, 86px); font-weight: 650; letter-spacing: -.06em; line-height: 1.04; }
+    h2 { max-width: 1120px; font-size: clamp(32px, 3.8vw, 60px); font-weight: 600; letter-spacing: -.05em; line-height: 1.08; }
+    h3 { font-size: clamp(20px, 1.8vw, 27px); font-weight: 600; line-height: 1.2; letter-spacing: -.035em; }
+    .intro { max-width: 850px; font-size: clamp(16px, 1.4vw, 21px); line-height: 1.5; color: var(--muted); margin-top: 16px; }
+    .accent { color: var(--green); }
+    .dark .accent { color: var(--mint); }
+    .body-copy { font-size: clamp(15px, 1.25vw, 19px); line-height: 1.6; color: var(--muted); }
+    .small { font-size: 12px; line-height: 1.55; color: var(--muted); }
+    .cover-grid { display: grid; grid-template-columns: 1.2fr .8fr; align-items: center; gap: 7vw; flex: 1; }
+    .cover-copy h1 { max-width: 880px; }
+    .cover-copy .intro { max-width: 530px; color: #d1dfe5; font-size: clamp(18px, 1.6vw, 24px); margin-top: 28px; }
+    .cover-note { margin-top: 34px; color: #a9c2cd; font-size: 13px; line-height: 1.6; }
+    .cover-aside { align-self: stretch; display: flex; flex-direction: column; justify-content: center; border-left: 1px solid #496271; padding-left: 3.5vw; }
+    .cover-aside .aside-title { font-size: 12px; color: var(--mint); letter-spacing: 1.7px; text-transform: uppercase; margin-bottom: 24px; }
+    .signal { padding: 23px 0; border-bottom: 1px solid #496271; }
+    .signal:first-of-type { padding-top: 0; }
+    .signal:last-of-type { border-bottom: 0; }
+    .signal strong { display: block; font-size: clamp(24px, 2.4vw, 38px); font-weight: 500; letter-spacing: -.035em; margin-bottom: 9px; }
+    .signal p { font-size: 15px; line-height: 1.6; color: #c0d1d9; }
+    .three-col { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 36px; }
+    .problem-col { border-top: 2px solid var(--line); padding-top: 20px; }
+    .number { display: block; color: var(--orange); font-size: 46px; font-weight: 450; letter-spacing: -.06em; margin-bottom: 22px; }
+    .problem-col h3 { margin-bottom: 14px; }
+    .bottom-line { margin-top: auto; background: var(--navy); color: white; padding: 22px 28px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .bottom-line strong { font-size: clamp(20px, 2vw, 29px); font-weight: 550; letter-spacing: -.03em; }
+    .bottom-line p { max-width: 400px; color: #d2e1e7; font-size: 14px; line-height: 1.6; }
+    .ecosystem { display: grid; grid-template-columns: 1fr 1fr; gap: 5vw; flex: 1; align-items: center; }
+    .persona { display: grid; grid-template-columns: 30px 1fr; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--line); }
+    .persona:first-child { padding-top: 0; }
+    .persona:last-child { border-bottom: 0; padding-bottom: 0; }
+    .persona > span { color: var(--green); font-size: 13px; padding-top: 5px; font-weight: 700; }
+    .persona h3 { font-size: 21px; margin-bottom: 8px; }
+    .persona p { font-size: 15px; line-height: 1.55; color: var(--muted); }
+    .diagnostic { background: #edf3f0; padding: clamp(20px, 2vw, 28px); }
+    .diagnostic h3 { font-size: 26px; margin-bottom: 9px; }
+    .diagnostic .demo-label { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--green); margin-bottom: 16px; }
+    table { border-collapse: collapse; width: 100%; text-align: left; margin: 24px 0 18px; }
+    th { font-size: 11px; font-weight: 600; color: var(--muted); padding-bottom: 12px; }
+    td { font-size: 13px; padding: 15px 5px 15px 0; border-top: 1px solid #cfdbd4; vertical-align: top; }
+    td strong { display: block; font-weight: 600; }
+    td small { display: block; font-size: 11px; color: var(--muted); margin-top: 5px; }
+    .priority { color: var(--orange); font-weight: 650; }
+    .insight { border-left: 3px solid var(--green); padding-left: 14px; font-size: 14px; line-height: 1.6; }
+    .science-grid { flex: 1; align-items: stretch; gap: 32px; }
+    .science-col { display: flex; flex-direction: column; border-top: 3px solid var(--green); padding-top: 20px; }
+    .science-col:nth-child(2) { border-color: var(--orange); }
+    .science-col .english { color: var(--muted); font-size: 13px; margin: 7px 0 18px; }
+    .science-col .body-copy { font-size: 16px; }
+    .application { margin: 20px 0 18px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 15px; line-height: 1.55; }
+    .application b { color: var(--green); font-weight: 650; }
+    .source { margin-top: auto; font-size: 11px; line-height: 1.6; color: var(--muted); }
+    .science-note { font-size: 12px; line-height: 1.6; color: var(--muted); max-width: 1080px; }
+    .roi-grid { display: grid; grid-template-columns: .72fr 1.28fr; gap: 6vw; flex: 1; align-items: center; }
+    .roi-statement { font-size: clamp(28px, 3.2vw, 49px); font-weight: 500; line-height: 1.15; letter-spacing: -.045em; }
+    .roi-statement span { color: var(--green); }
+    .roi-table { margin: 0; }
+    .roi-table th { font-size: 12px; padding: 0 20px 16px 0; }
+    .roi-table td { font-size: 14px; line-height: 1.5; padding: 20px 24px 20px 0; }
+    .roi-table td:first-child { width: 62%; }
+    .roi-table td strong { font-size: 19px; line-height: 1.3; margin-bottom: 8px; }
+    .roi-table td p { color: var(--muted); }
+    .measurement { background: #e8f4ed; padding: 18px 24px; color: var(--green); font-size: 14px; line-height: 1.6; }
+    .timeline { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 36px; list-style: none; padding: 0; flex: 1; }
+    .timeline li { border-top: 1px solid #b7c9c1; padding-top: 16px; }
+    .month { font-size: 12px; color: var(--green); font-weight: 650; letter-spacing: 1.5px; margin-bottom: 12px; }
+    .month b { font-size: 28px; letter-spacing: -1px; margin-left: 8px; font-weight: 500; }
+    .timeline h3 { font-size: 20px; margin-bottom: 10px; }
+    .timeline p { font-size: 14px; line-height: 1.55; color: var(--muted); }
+    .timeline li:nth-child(3), .timeline li:nth-child(6) { border-top: 3px solid var(--green); padding-top: 14px; }
+    .timeline .deliverable { color: var(--green); margin-top: 12px; font-size: 12px; font-weight: 600; }
+    .timeline-note { font-size: 13px; line-height: 1.5; color: var(--muted); }
+    .cta-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 7vw; flex: 1; align-items: center; }
+    .cta-copy h2 { font-size: clamp(42px, 4.7vw, 74px); }
+    .cta-copy .intro { color: #d2dfe5; max-width: 580px; margin-top: 24px; }
+    .primary { border: 0; background: var(--mint); color: var(--navy); padding: 17px 23px; border-radius: 5px; font-weight: 650; font-size: 15px; line-height: 1.4; transition: background .2s, transform .2s; }
+    .primary:hover { background: #d1ffe7; transform: translateY(-2px); }
+    .cta-copy .primary { margin-top: 28px; }
+    .commitment { font-size: 12px; color: #b4cbd5; margin-top: 15px; line-height: 1.6; max-width: 520px; }
+    .start-plan { background: var(--mint); color: var(--navy); padding: clamp(24px, 3vw, 44px); }
+    .start-plan .eyebrow { color: var(--green); }
+    .start-plan h3 { font-size: 30px; }
+    .start-plan ol { padding: 22px 0 22px 20px; font-size: 15px; line-height: 1.6; }
+    .start-plan li + li { margin-top: 12px; }
+    .contacts { border-top: 1px solid #78b49b; padding-top: 20px; font-style: normal; }
+    .contacts .label { font-size: 11px; font-weight: 650; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px; }
+    .contacts strong { font-size: 18px; font-weight: 600; }
+    .contacts p { font-size: 13px; line-height: 1.6; margin-top: 9px; }
+    .contacts a { display: inline-block; padding: 4px 0; overflow-wrap: anywhere; }
+    .controls {
+      display: flex; align-items: center; justify-content: space-between; gap: 20px;
+      padding: 14px var(--gutter) max(14px, env(safe-area-inset-bottom));
+      border-top: 1px solid var(--line); position: relative;
+    }
+    .progress { position: absolute; left: 0; top: -2px; height: 3px; width: 100%; pointer-events: none; }
+    .progress span { display: block; width: 14.2857%; height: 100%; background: var(--green); transition: width .4s ease; }
+    .dark .progress span { background: var(--mint); }
+    .slide-label { font-size: 12px; color: var(--muted); min-width: 150px; }
+    .dark .slide-label { color: #c0d1d9; }
+    .pagination { display: flex; align-items: center; gap: 5px; }
+    .dot { width: 30px; height: 40px; padding: 0; border: 0; background: transparent; color: inherit; display: grid; place-items: center; }
+    .dot::after { content: ''; width: 6px; height: 6px; background: currentColor; opacity: .25; border-radius: 50%; transition: width .25s, opacity .25s; }
+    .dot[aria-current="step"]::after { width: 22px; border-radius: 5px; opacity: 1; }
+    .nav-actions { display: flex; align-items: center; gap: 12px; }
+    .counter { font-size: 12px; font-variant-numeric: tabular-nums; margin-right: 8px; white-space: nowrap; }
+    .nav-btn { min-height: 42px; border: 1px solid #a4b5bb; border-radius: 5px; padding: 10px 15px; color: inherit; background: transparent; font-size: 12px; font-weight: 550; transition: background .2s; }
+    .nav-btn:hover:not(:disabled) { background: #dceae3; }
+    .dark .nav-btn { border-color: #718b9b; }
+    .dark .nav-btn:hover:not(:disabled) { background: #294759; }
+    .nav-btn span { display: inline-block; margin: 0 5px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+    dialog { width: min(580px, calc(100vw - 32px)); max-height: calc(100dvh - 48px); overflow: auto; border: 0; border-radius: 12px; padding: 32px; color: var(--ink); background: var(--paper); box-shadow: 0 24px 100px #0005; }
+    dialog::backdrop { background: #061a2bb3; backdrop-filter: blur(5px); }
+    dialog h2 { font-size: 30px; }
+    dialog p { font-size: 15px; line-height: 1.65; margin: 18px 0; }
+    dialog .message { background: #e8f2ed; border-left: 3px solid var(--green); padding: 18px; user-select: text; }
+    .dialog-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    #copy-status { min-height: 22px; margin: 14px 0 0; font-size: 12px; color: var(--green); }
+    @media (min-width: 1000px) and (max-height: 820px) {
+      .deck { grid-template-rows: 62px minmax(0, 1fr) 68px; }
+      .slide { padding-top: 24px; padding-bottom: 24px; }
+      .slide-inner { gap: 22px; }
+      h1 { font-size: clamp(42px, 4.8vw, 65px); }
+      h2 { font-size: 40px; }
+      .eyebrow { margin-bottom: 10px; }
+      .intro { margin-top: 12px; font-size: 16px; }
+      .number { font-size: 34px; margin-bottom: 12px; }
+      .body-copy { font-size: 15px; }
+      .science-col .body-copy { font-size: 14px; }
+      .science-col { padding-top: 14px; }
+      .science-col .english { margin-bottom: 12px; }
+      .application { margin-top: 14px; font-size: 14px; }
+      .persona { padding: 12px 0; }
+      .persona p { font-size: 14px; }
+      .diagnostic { padding: 22px; }
+      .diagnostic table { margin: 18px 0 14px; }
+      .diagnostic td { padding-top: 11px; padding-bottom: 11px; }
+      .roi-table td { padding-top: 14px; padding-bottom: 14px; font-size: 13px; line-height: 1.45; }
+      .roi-table td strong { font-size: 18px; margin-bottom: 6px; }
+      .measurement { font-size: 13px; padding: 16px 22px; }
+      .timeline { gap: 18px 30px; }
+      .timeline h3 { font-size: 18px; }
+      .timeline p { font-size: 13px; }
+      .month { margin-bottom: 7px; }
+      .timeline .deliverable { margin-top: 8px; }
+      .cta-copy h2 { font-size: 54px; }
+      .start-plan { padding: 26px; }
+    }
+    @media (max-width: 999px) {
+      :root { --gutter: 32px; }
+      .deck { grid-template-rows: 66px minmax(0, 1fr) 76px; }
+      .slide-label { display: none; }
+      .cover-grid, .cta-grid { gap: 32px; }
+      .cover-aside { padding-left: 26px; }
+      .three-col { gap: 22px; }
+      .ecosystem { gap: 30px; }
+      .roi-grid { grid-template-columns: .65fr 1.35fr; gap: 30px; }
+      .timeline { gap: 22px; }
+      .science-col .body-copy, .application { font-size: 14px; }
+    }
+    @media (max-width: 700px) {
+      :root { --gutter: 22px; }
+      .deck { grid-template-rows: 60px minmax(0, 1fr) 74px; }
+      .topbar { gap: 12px; }
+      .topbar small { font-size: 9px; letter-spacing: 1px; text-align: right; }
+      .brand { font-size: 23px; }
+      .slide { padding-top: 24px; padding-bottom: 24px; }
+      .slide-inner { gap: 24px; padding-right: 3px; }
+      h1 { font-size: clamp(42px, 9.7vw, 64px); }
+      h2 { font-size: clamp(30px, 7.2vw, 44px); }
+      .intro { font-size: 15px; margin-top: 13px; }
+      .eyebrow { font-size: 10px; letter-spacing: 1.6px; }
+      .cover-grid, .cta-grid, .ecosystem, .roi-grid { grid-template-columns: 1fr; gap: 30px; align-content: start; }
+      .cover-copy .intro { font-size: 18px; margin-top: 22px; }
+      .cover-note { margin-top: 18px; font-size: 12px; }
+      .cover-aside { border-left: 0; border-top: 1px solid #496271; padding: 22px 0 0; }
+      .cover-aside .aside-title { margin-bottom: 16px; font-size: 10px; }
+      .signal { padding: 12px 0; }
+      .signal strong { font-size: 22px; margin-bottom: 4px; }
+      .signal p { font-size: 13px; }
+      .three-col { grid-template-columns: 1fr; gap: 22px; }
+      .problem-col { padding-top: 16px; display: grid; grid-template-columns: 40px 1fr; gap: 0 15px; }
+      .number { grid-row: 1 / 3; font-size: 30px; margin: 0; }
+      .problem-col h3 { font-size: 22px; margin-bottom: 8px; }
+      .body-copy { font-size: 15px; line-height: 1.5; }
+      .bottom-line { flex-direction: column; align-items: flex-start; gap: 10px; padding: 20px; }
+      .bottom-line p { font-size: 13px; }
+      .persona h3 { font-size: 21px; }
+      .diagnostic { padding: 22px; }
+      .science-col { padding-top: 18px; }
+      .science-col h3 { font-size: 24px; }
+      .science-col .english { margin: 6px 0 12px; }
+      .science-col .body-copy, .application { font-size: 15px; }
+      .application { margin: 14px 0; padding-top: 12px; }
+      .source { margin-top: 0; }
+      .roi-statement { font-size: 31px; max-width: 500px; }
+      .roi-table td { padding-right: 14px; font-size: 13px; }
+      .roi-table td strong { font-size: 18px; }
+      .measurement { padding: 18px; font-size: 13px; }
+      .timeline { grid-template-columns: 1fr 1fr; gap: 24px 20px; }
+      .timeline h3 { font-size: 18px; }
+      .timeline p { font-size: 13px; }
+      .month { font-size: 10px; margin-bottom: 9px; }
+      .month b { font-size: 24px; margin-left: 4px; }
+      .timeline .deliverable { font-size: 11px; }
+      .cta-copy h2 { font-size: clamp(38px, 9.2vw, 58px); }
+      .cta-copy .primary { width: 100%; }
+      .start-plan h3 { font-size: 28px; }
+      .pagination { display: none; }
+      .controls { justify-content: center; }
+      .nav-actions { width: 100%; justify-content: space-between; gap: 10px; }
+      .counter { order: -1; margin-right: auto; }
+      .nav-btn { padding: 11px 9px; }
+      dialog { padding: 24px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+    }
+    @media print {
+      @page { size: A4 landscape; margin: 0; }
+      html, body { height: auto; overflow: visible; background: white; }
+      .deck, .stage { display: block; width: auto; height: auto; overflow: visible; background: white !important; color: var(--ink) !important; }
+      .topbar, .controls, dialog, .sr-only, .cta-copy .primary, .commitment { display: none !important; }
+      .slide { position: relative; width: 297mm; height: 210mm; padding: 16mm; opacity: 1; visibility: visible; transform: none; break-after: page; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      .slide:last-child { break-after: auto; }
+      .slide-inner { overflow: visible; gap: 26px; }
+      .slide[data-theme="dark"] { background: var(--navy); color: white; }
+      .slide[data-theme="dark"] .eyebrow, .slide[data-theme="dark"] .accent { color: var(--mint); }
+      .slide[data-theme="light"] .eyebrow, .slide[data-theme="light"] .accent { color: var(--green); }
+      h1 { font-size: 58px; } h2 { font-size: 42px; }
+      .cta-copy h2 { font-size: 54px; }
+      .three-col { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .cover-grid, .cta-grid, .ecosystem, .roi-grid { grid-template-columns: 1fr 1fr; }
+      .timeline { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .source a { text-decoration: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="deck dark" id="deck">
+    <header class="topbar">
+      <div class="brand" aria-label="HopeLeaf">Hope<span>Leaf</span></div>
+      <small>Inteligência pedagógica para o Ensino Médio</small>
+    </header>
+
+    <main class="stage" id="stage" aria-label="Apresentação HopeLeaf" aria-roledescription="carrossel">
+      <section class="slide active" id="slide-1" data-theme="dark" data-label="A proposta" role="group" aria-roledescription="slide" aria-label="1 de 7" aria-labelledby="title-1">
+        <div class="slide-inner">
+          <div class="cover-grid">
+            <div class="cover-copy">
+              <p class="eyebrow">Ecossistema educacional HopeLeaf</p>
+              <h1 id="title-1" tabindex="-1">Inteligência pedagógica.<br><span class="accent">Antes da prova.</span></h1>
+              <p class="intro">Transformando tempo de tela em resultados acadêmicos.</p>
+              <p class="cover-note">Flashcards das aulas, engajamento para adolescentes<br>e dados para quem decide o próximo passo.</p>
+            </div>
+            <aside class="cover-aside" aria-label="Visão geral do ecossistema">
+              <p class="aside-title">Uma escola mais conectada ao aprendizado</p>
+              <div class="signal"><strong>O aluno pratica.</strong><p>Revisões curtas que cabem na rotina de quem tem de 14 a 18 anos.</p></div>
+              <div class="signal"><strong>O professor intervém.</strong><p>Dificuldades visíveis enquanto ainda há tempo de retomar o conteúdo.</p></div>
+              <div class="signal"><strong>A direção antecipa.</strong><p>Um diagnóstico contínuo para orientar a gestão pedagógica.</p></div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" id="slide-2" data-theme="light" data-label="O problema atual" role="group" aria-roledescription="slide" aria-label="2 de 7" aria-labelledby="title-2" aria-hidden="true" inert>
+        <div class="slide-inner">
+          <header><p class="eyebrow">O problema atual</p><h2 id="title-2" tabindex="-1">Quando a nota chega,<br>a dificuldade já avançou</h2><p class="intro">Entre a aula e a avaliação, a escola perde sinais que poderiam orientar uma intervenção.</p></header>
+          <div class="three-col">
+            <article class="problem-col"><span class="number">01</span><h3>O aluno se desconecta</h3><p class="body-copy">Métodos tradicionais disputam atenção com experiências digitais imediatas. Sem perceber progresso, o adolescente adia a revisão e acumula dúvidas.</p></article>
+            <article class="problem-col"><span class="number">02</span><h3>O professor descobre tarde</h3><p class="body-copy">A defasagem aparece na correção, <strong>depois da prova</strong>. A recuperação começa quando o conteúdo seguinte já entrou em cena.</p></article>
+            <article class="problem-col"><span class="number">03</span><h3>A gestão vê fragmentos</h3><p class="body-copy">Notas e relatos dispersos dificultam enxergar, em tempo real, quais turmas precisam de apoio e quais habilidades exigem atenção.</p></article>
+          </div>
+          <aside class="bottom-line"><strong>O tempo para intervir faz diferença.</strong><p>Identificar a dificuldade durante o aprendizado abre espaço para agir antes que ela vire uma nota baixa.</p></aside>
+        </div>
+      </section>
+
+      <section class="slide" id="slide-3" data-theme="light" data-label="Nosso ecossistema" role="group" aria-roledescription="slide" aria-label="3 de 7" aria-labelledby="title-3" aria-hidden="true" inert>
+        <div class="slide-inner">
+          <header><p class="eyebrow">A solução</p><h2 id="title-3" tabindex="-1">Uma aula. Três visões conectadas.</h2><p class="intro">Cada resposta do aluno ajuda a definir o que revisar e onde a escola deve atuar.</p></header>
+          <div class="ecosystem">
+            <div>
+              <article class="persona"><span>01</span><div><h3>Aluno: vontade de continuar</h3><p>Flashcards baseados nas aulas, metas de consistência e desafios entre turmas. Competição saudável que reconhece evolução e participação.</p></div></article>
+              <article class="persona"><span>02</span><div><h3>Professor: repertório e agilidade</h3><p>Criação rápida de questões e banco inteligente, organizado por conteúdo, habilidade e dificuldade. Reutilização de atividades e diagnóstico automático das respostas objetivas.</p></div></article>
+              <article class="persona"><span>03</span><div><h3>Diretor: o raio-X da escola</h3><p>Dashboard atualizado a cada resposta sincronizada. Ranking de dificuldades por disciplina e turma, com estimativas de notas para orientar intervenções antes das provas.</p></div></article>
+            </div>
+            <aside class="diagnostic">
+              <p class="demo-label">Dashboard diagnóstico · exemplo ilustrativo</p>
+              <h3>Onde atuar primeiro</h3>
+              <p class="small">Prioridades pedagógicas por conteúdo e turma.</p>
+              <table aria-label="Exemplo fictício de dificuldades priorizadas">
+                <thead><tr><th scope="col">Ordem</th><th scope="col">Disciplina / turma</th><th scope="col">Dificuldade</th></tr></thead>
+                <tbody>
+                  <tr><td>01</td><td><strong>Matemática</strong><small>2ª série A</small></td><td><strong class="priority">Funções</strong><small>Prioridade alta</small></td></tr>
+                  <tr><td>02</td><td><strong>Química</strong><small>1ª série B</small></td><td><strong>Ligações químicas</strong><small>Retomar conceitos</small></td></tr>
+                  <tr><td>03</td><td><strong>Biologia</strong><small>3ª série A</small></td><td><strong>Genética</strong><small>Consolidar a prática</small></td></tr>
+                </tbody>
+              </table>
+              <p class="insight">A coordenação transforma sinais de dificuldade em um plano de retomada com o professor.</p>
+              <p class="small" style="margin-top:16px">As estimativas de notas precisam ser validadas com avaliações da escola no piloto. O painel apoia o julgamento pedagógico.</p>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" id="slide-4" data-theme="light" data-label="Embasamento científico" role="group" aria-roledescription="slide" aria-label="4 de 7" aria-labelledby="title-4" aria-hidden="true" inert>
+        <div class="slide-inner">
+          <header><p class="eyebrow">Embasamento científico</p><h2 id="title-4" tabindex="-1">Ciência da aprendizagem<br>por trás de cada interação</h2><p class="intro">A gamificação dá forma a uma ferramenta pedagógica de prática e diagnóstico contínuos.</p></header>
+          <div class="three-col science-grid">
+            <article class="science-col"><h3>Recuperar para lembrar</h3><p class="english">Active Recall</p><p class="body-copy">Recuperar uma resposta da memória fortalece a retenção. Karpicke e Roediger encontraram vantagem dos testes repetidos sobre o reestudo na lembrança posterior.</p><p class="application"><b>No HopeLeaf:</b> o aluno tenta responder antes de ver a explicação e recebe feedback para corrigir o raciocínio.</p><p class="source"><a href="https://learninglab.psych.purdue.edu/downloads/2008/2008_Karpicke_Roediger_Science.pdf" target="_blank" rel="noopener noreferrer">Karpicke &amp; Roediger, 2008 · Science ↗</a></p></article>
+            <article class="science-col"><h3>Revisar com intervalo</h3><p class="english">Spaced Repetition</p><p class="body-copy">A curva de Ebbinghaus descreve a perda de memória ao longo do tempo. A prática espaçada favorece a retenção, com intervalos que dependem do objetivo de aprendizagem.</p><p class="application"><b>No HopeLeaf:</b> o algoritmo ajusta revisões a partir de acertos e erros, buscando antecipar o esquecimento provável de cada conteúdo.</p><p class="source"><a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0120644" target="_blank" rel="noopener noreferrer">Ebbinghaus · replicação de Murre &amp; Dros, 2015 ↗</a><br><a href="https://www.yorku.ca/ncepeda/publications/CVRWP2008.html" target="_blank" rel="noopener noreferrer">Cepeda et al., 2008 · Psychological Science ↗</a></p></article>
+            <article class="science-col"><h3>Participar com propósito</h3><p class="english">Teoria da Autodeterminação</p><p class="body-copy">Deci e Ryan destacam autonomia, competência e pertencimento como bases da motivação. O desenho da experiência precisa apoiar essas necessidades.</p><p class="application"><b>No HopeLeaf:</b> escolhas de metas, progresso individual e desafios cooperativos de turma vs. turma. Dinâmicas adequadas à adolescência, sem exposição de notas individuais.</p><p class="source"><a href="https://selfdeterminationtheory.org/SDT/documents/2000_RyanDeci_SDT.pdf" target="_blank" rel="noopener noreferrer">Ryan &amp; Deci, 2000 · American Psychologist ↗</a></p></article>
+          </div>
+          <p class="science-note">Essas pesquisas fundamentam os métodos. A combinação no HopeLeaf e seus efeitos sobre notas e engajamento serão avaliados no piloto. O diagnóstico proposto é pedagógico.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="slide-5" data-theme="light" data-label="Retorno para a escola" role="group" aria-roledescription="slide" aria-label="5 de 7" aria-labelledby="title-5" aria-hidden="true" inert>
+        <div class="slide-inner">
+          <header><p class="eyebrow">Retorno para a escola</p><h2 id="title-5" tabindex="-1">Valor pedagógico com<br>indicadores de negócio</h2></header>
+          <div class="roi-grid">
+            <p class="roi-statement">Uma proposta de valor que a escola consegue <span>demonstrar e medir.</span></p>
+            <table class="roi-table" aria-label="Benefícios esperados e indicadores de retorno">
+              <thead><tr><th scope="col">Retorno esperado</th><th scope="col">Como acompanhar</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Atrair e reter matrículas</strong><p>Diferencial de marketing com acompanhamento visível do aprendizado. Identificação precoce do desengajamento para apoiar a permanência.</p></td><td>Conversão de matrículas, rematrículas e evasão ao longo do ciclo letivo.</td></tr>
+                <tr><td><strong>Melhorar o desempenho</strong><p>Prática consistente e retomadas por habilidade para fortalecer a preparação para o ENEM e os vestibulares.</p></td><td>Evolução em provas e simulados comparáveis, por habilidade e turma.</td></tr>
+                <tr><td><strong>Devolver tempo ao professor</strong><p>Correção automática de diagnósticos objetivos e reaproveitamento de questões para ampliar o tempo dedicado às intervenções.</p></td><td>Horas de preparação e correção antes e depois da adoção.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <aside class="measurement"><strong>ROI a validar no piloto:</strong> estimar o valor das horas poupadas e a contribuição das matrículas adicionais ou preservadas, descontando implantação e operação. Comparar os resultados com a linha de base, sem atribuir toda mudança ao app.</aside>
+        </div>
+      </section>
+
+      <section class="slide" id="slide-6" data-theme="light" data-label="Implementação em 6 meses" role="group" aria-roledescription="slide" aria-label="6 de 7" aria-labelledby="title-6" aria-hidden="true" inert>
+        <div class="slide-inner">
+          <header><p class="eyebrow">Cronograma de implementação</p><h2 id="title-6" tabindex="-1">Seis meses. Uma adoção acompanhada.</h2><p class="intro">Um piloto em duas turmas prepara a expansão e estabelece a base para medir impacto.</p></header>
+          <ol class="timeline">
+            <li><div class="month">MÊS <b>01</b></div><h3>Planejamento &amp; diagnóstico</h3><p>Questionários com alunos e professores para entender hábitos, acesso e usabilidade. Definição das turmas, objetivos e linha de base.</p><p class="deliverable">Entrega: plano de implantação acordado.</p></li>
+            <li><div class="month">MÊS <b>02</b></div><h3>Configuração &amp; treinamento</h3><p>Configuração da plataforma e capacitação de duas semanas para os professores criarem e revisarem o banco inicial de questões.</p><p class="deliverable">Entrega: equipe preparada e banco inicial.</p></li>
+            <li><div class="month">MÊS <b>03</b></div><h3>Piloto MVP em duas turmas</h3><p>Uso da versão inicial em duas turmas específicas. Coleta de dados de participação, dificuldades e usabilidade durante as aulas e revisões.</p><p class="deliverable">Entrega: evidências de uso do piloto.</p></li>
+            <li><div class="month">MÊS <b>04</b></div><h3>Feedback &amp; ajustes</h3><p>Análise dos questionários do piloto. Refinamento do app, dos conteúdos e do painel conforme a experiência de alunos e professores.</p><p class="deliverable">Entrega: versão ajustada para expansão.</p></li>
+            <li><div class="month">MÊS <b>05</b></div><h3>Lançamento gamificado</h3><p>Campanha de engajamento para toda a escola, com desafios entre turmas, metas de consistência e acompanhamento dos professores.</p><p class="deliverable">Entrega: lançamento oficial acompanhado.</p></li>
+            <li><div class="month">MÊS <b>06</b></div><h3>Avaliação de impacto</h3><p>Comparação das notas com a linha de base e o uso do app. Análise por turma e habilidade para ajustar intervenções pedagógicas.</p><p class="deliverable">Entrega: relatório e plano do próximo ciclo.</p></li>
+          </ol>
+          <p class="timeline-note">A direção acompanha cada etapa e valida a expansão. A análise de impacto considera desempenho inicial, frequência e diferenças entre turmas.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="slide-7" data-theme="dark" data-label="O próximo passo" role="group" aria-roledescription="slide" aria-label="7 de 7" aria-labelledby="title-7" aria-hidden="true" inert>
+        <div class="slide-inner">
+          <div class="cta-grid">
+            <div class="cta-copy"><p class="eyebrow">O próximo passo</p><h2 id="title-7" tabindex="-1">A próxima prova<br>pode chegar com<br><span class="accent">menos surpresas.</span></h2><p class="intro">Nosso convite é começar pelo Mês 1: ouvir a comunidade escolar e desenhar um diagnóstico que faça sentido para a sua realidade.</p><button class="primary" id="open-invite" type="button">Preparar o início do Mês 1 <span aria-hidden="true">↗</span></button><p class="commitment">Proposta de início sem compromisso de expansão. Escopo, responsabilidades e condições acordados antes da execução.</p></div>
+            <aside class="start-plan"><p class="eyebrow">Primeira etapa</p><h3>Um começo seguro,<br>com decisão ao final.</h3><ol><li>Indicar um responsável da direção ou coordenação.</li><li>Alinhar questionários e selecionar as duas turmas candidatas ao piloto.</li><li>Definir critérios de sucesso e aprovar o plano antes de avançar.</li></ol><address class="contacts"><p class="label">Contato do projeto</p><strong>José Cláudio</strong><p><a href="mailto:ramos.filho@unesp.br?subject=HopeLeaf%20%7C%20Diagn%C3%B3stico%20inicial">ramos.filho@unesp.br</a><br><a href="https://wa.me/5519999733281" target="_blank" rel="noopener noreferrer" aria-label="Conversar com José Cláudio pelo WhatsApp, 19 99973-3281">WhatsApp: (19) 99973-3281 ↗</a></p></address></aside>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="controls">
+      <div class="progress" role="progressbar" aria-label="Progresso da apresentação" aria-valuemin="1" aria-valuemax="7" aria-valuenow="1"><span id="progress-fill"></span></div>
+      <p class="slide-label" id="slide-label">A proposta</p>
+      <nav class="pagination" aria-label="Escolher slide">
+        <button class="dot" type="button" data-slide="0" aria-label="Slide 1: A proposta" aria-current="step"></button>
+        <button class="dot" type="button" data-slide="1" aria-label="Slide 2: O problema atual"></button>
+        <button class="dot" type="button" data-slide="2" aria-label="Slide 3: Nosso ecossistema"></button>
+        <button class="dot" type="button" data-slide="3" aria-label="Slide 4: Embasamento científico"></button>
+        <button class="dot" type="button" data-slide="4" aria-label="Slide 5: Retorno para a escola"></button>
+        <button class="dot" type="button" data-slide="5" aria-label="Slide 6: Implementação em 6 meses"></button>
+        <button class="dot" type="button" data-slide="6" aria-label="Slide 7: O próximo passo"></button>
+      </nav>
+      <nav class="nav-actions" aria-label="Navegação da apresentação">
+        <span class="counter" id="counter" aria-hidden="true">01 / 07</span>
+        <button class="nav-btn" id="prev" type="button" aria-keyshortcuts="ArrowLeft" disabled><span aria-hidden="true">←</span> Anterior</button>
+        <button class="nav-btn" id="next" type="button" aria-keyshortcuts="ArrowRight">Próximo <span aria-hidden="true">→</span></button>
+      </nav>
+    </footer>
+  </div>
+  <p class="sr-only" id="announcement" aria-live="polite" aria-atomic="true"></p>
+
+  <dialog id="invite-dialog" aria-labelledby="invite-title" aria-describedby="invite-description">
+    <p class="eyebrow">Conversa inicial</p><h2 id="invite-title">O primeiro passo pode ser uma mensagem.</h2>
+    <p id="invite-description">Fale com José Cláudio para alinhar o diagnóstico: <a href="mailto:ramos.filho@unesp.br?subject=HopeLeaf%20%7C%20Diagn%C3%B3stico%20inicial">ramos.filho@unesp.br</a> ou <a href="https://wa.me/5519999733281" target="_blank" rel="noopener noreferrer">WhatsApp (19) 99973-3281</a>. Você também pode copiar o convite abaixo.</p>
+    <p class="message" id="invite-message" tabindex="0">Gostaria de alinhar o Mês 1 do HopeLeaf na nossa escola. Vamos definir o responsável pedagógico, os questionários com alunos e professores, as duas turmas candidatas ao piloto e os critérios de sucesso. Também queremos acordar escopo, responsabilidades e condições antes de iniciar, com decisão de continuidade ao final do diagnóstico.</p>
+    <div class="dialog-actions"><button class="primary" type="button" id="copy-invite">Copiar mensagem</button><button class="nav-btn" type="button" id="close-invite" autofocus>Fechar</button></div>
+    <p id="copy-status" role="status" aria-live="polite"></p>
+  </dialog>
+
+  <noscript><p style="position:fixed;bottom:0;left:0;z-index:10;background:#102c40;color:white;padding:12px;font:14px Arial">Ative o JavaScript para navegar pelos sete slides desta apresentação.</p></noscript>
+
+  <script>
+    (() => {
+      'use strict';
+      const deck = document.getElementById('deck');
+      const slides = Array.from(document.querySelectorAll('.slide'));
+      const dots = Array.from(document.querySelectorAll('.dot'));
+      const previous = document.getElementById('prev');
+      const next = document.getElementById('next');
+      const counter = document.getElementById('counter');
+      const label = document.getElementById('slide-label');
+      const progress = document.querySelector('.progress');
+      const fill = document.getElementById('progress-fill');
+      const announcement = document.getElementById('announcement');
+      const dialog = document.getElementById('invite-dialog');
+      let current = -1;
+
+      function indexFromHash() {
+        const match = /^#slide-([1-7])$/.exec(window.location.hash);
+        return match ? Number(match[1]) - 1 : 0;
+      }
+
+      function goTo(index, { updateHash = true, announce = true } = {}) {
+        const target = Math.min(Math.max(index, 0), slides.length - 1);
+        if (target === current) return;
+        const focusWasInSlide = current >= 0 && slides[current].contains(document.activeElement);
+        current = target;
+        slides.forEach((slide, i) => {
+          const active = i === current;
+          slide.classList.toggle('active', active);
+          slide.setAttribute('aria-hidden', String(!active));
+          slide.inert = !active;
+        });
+        dots.forEach((dot, i) => {
+          if (i === current) dot.setAttribute('aria-current', 'step');
+          else dot.removeAttribute('aria-current');
+        });
+        deck.classList.toggle('dark', slides[current].dataset.theme === 'dark');
+        previous.disabled = current === 0;
+        next.disabled = current === slides.length - 1;
+        counter.textContent = `${String(current + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}`;
+        label.textContent = slides[current].dataset.label;
+        fill.style.width = `${((current + 1) / slides.length) * 100}%`;
+        progress.setAttribute('aria-valuenow', String(current + 1));
+        if (announce) announcement.textContent = `Slide ${current + 1} de ${slides.length}: ${label.textContent}`;
+        if (focusWasInSlide || document.activeElement === previous && previous.disabled || document.activeElement === next && next.disabled) {
+          slides[current].querySelector('h1, h2').focus({ preventScroll: true });
+        }
+        if (updateHash) {
+          try { window.history.replaceState(null, '', `#slide-${current + 1}`); }
+          catch { /* A navegação continua em ambientes que restringem o histórico local. */ }
+        }
+      }
+
+      previous.addEventListener('click', () => goTo(current - 1));
+      next.addEventListener('click', () => goTo(current + 1));
+      dots.forEach(dot => dot.addEventListener('click', () => goTo(Number(dot.dataset.slide))));
+      window.addEventListener('hashchange', () => goTo(indexFromHash(), { updateHash: false }));
+
+      document.addEventListener('keydown', event => {
+        if (dialog.open || event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey) return;
+        if (event.target.closest('input, textarea, select, [contenteditable="true"]')) return;
+        let target;
+        if (event.key === 'ArrowRight' || event.key === 'PageDown') target = current + 1;
+        else if (event.key === 'ArrowLeft' || event.key === 'PageUp') target = current - 1;
+        else if (event.key === 'Home') target = 0;
+        else if (event.key === 'End') target = slides.length - 1;
+        else if (event.key === ' ' && !event.target.closest('button, a')) target = current + (event.shiftKey ? -1 : 1);
+        if (target !== undefined) { event.preventDefault(); goTo(target); }
+      });
+
+      document.getElementById('open-invite').addEventListener('click', () => {
+        document.getElementById('copy-status').textContent = '';
+        dialog.showModal();
+      });
+      document.getElementById('close-invite').addEventListener('click', () => dialog.close());
+      document.getElementById('copy-invite').addEventListener('click', async () => {
+        const message = document.getElementById('invite-message');
+        const status = document.getElementById('copy-status');
+        try {
+          if (!navigator.clipboard || !window.isSecureContext) throw new Error('Clipboard unavailable');
+          await navigator.clipboard.writeText(message.textContent.trim());
+          status.textContent = 'Mensagem copiada. Envie pelo canal de contato da equipe.';
+        } catch {
+          const range = document.createRange();
+          range.selectNodeContents(message);
+          const selection = window.getSelection();
+          selection.removeAllRanges(); selection.addRange(range); message.focus();
+          status.textContent = 'Selecione e copie o texto acima pelo menu do dispositivo ou com Ctrl+C / ⌘C.';
+        }
+      });
+
+      goTo(indexFromHash(), { updateHash: false, announce: false });
+    })();
+  </script>
+</body>
+</html>
