@@ -1,6 +1,6 @@
-# HopeLeaf — Externato
+# HopeLeaf — ExternApp
 
-Apresentação institucional do ecossistema educacional HopeLeaf para escolas de Ensino Médio.
+Apresentação institucional do ExternApp, aplicação educacional do projeto HopeLeaf para escolas de Ensino Médio.
 
 ## Apresentação
 

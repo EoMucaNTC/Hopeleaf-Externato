@@ -1,4 +1,4 @@
-name: Publicar apresentação HopeLeaf
+name: Publicar apresentação ExternApp
 
 on:
   push:
