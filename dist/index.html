@@ -113,7 +113,7 @@
     .application b { color: var(--green); font-weight: 650; }
     .source { margin-top: auto; font-size: 11px; line-height: 1.6; color: var(--muted); }
     .science-note { font-size: 12px; line-height: 1.6; color: var(--muted); max-width: 1080px; }
-    .roi-grid { display: grid; grid-template-columns: .72fr 1.28fr; gap: 6vw; flex: 1; align-items: center; }
+    .roi-grid { display: grid; grid-template-columns: 1fr; flex: 1; align-items: center; }
     .roi-statement { font-size: clamp(28px, 3.2vw, 49px); font-weight: 500; line-height: 1.15; letter-spacing: -.045em; }
     .roi-statement span { color: var(--green); }
     .roi-table { margin: 0; }
@@ -155,7 +155,7 @@
       border-top: 1px solid var(--line); position: relative;
     }
     .progress { position: absolute; left: 0; top: -2px; height: 3px; width: 100%; pointer-events: none; }
-    .progress span { display: block; width: 14.2857%; height: 100%; background: var(--green); transition: width .4s ease; }
+    .progress span { display: block; width: 16.6667%; height: 100%; background: var(--green); transition: width .4s ease; }
     .dark .progress span { background: var(--mint); }
     .slide-label { font-size: 12px; color: var(--muted); min-width: 150px; }
     .dark .slide-label { color: #c0d1d9; }
@@ -216,7 +216,7 @@
       .cover-aside { padding-left: 26px; }
       .three-col { gap: 22px; }
       .ecosystem { gap: 30px; }
-      .roi-grid { grid-template-columns: .65fr 1.35fr; gap: 30px; }
+      .roi-grid { grid-template-columns: 1fr; }
       .timeline { gap: 22px; }
       .science-col .body-copy, .application { font-size: 14px; }
     }
@@ -292,7 +292,8 @@
       h1 { font-size: 58px; } h2 { font-size: 42px; }
       .cta-copy h2 { font-size: 54px; }
       .three-col { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-      .cover-grid, .cta-grid, .ecosystem, .roi-grid { grid-template-columns: 1fr 1fr; }
+      .cover-grid, .cta-grid, .ecosystem { grid-template-columns: 1fr 1fr; }
+      .roi-grid { grid-template-columns: 1fr; }
       .timeline { grid-template-columns: repeat(3, minmax(0, 1fr)); }
       .source a { text-decoration: none; }
     }
@@ -306,7 +307,7 @@
     </header>
 
     <main class="stage" id="stage" aria-label="Apresentação ExternApp" aria-roledescription="carrossel">
-      <section class="slide active" id="slide-1" data-theme="dark" data-label="A proposta" role="group" aria-roledescription="slide" aria-label="1 de 7" aria-labelledby="title-1">
+      <section class="slide active" id="slide-1" data-theme="dark" data-label="A proposta" role="group" aria-roledescription="slide" aria-label="1 de 6" aria-labelledby="title-1">
         <div class="slide-inner">
           <div class="cover-grid">
             <div class="cover-copy">
@@ -325,7 +326,7 @@
         </div>
       </section>
 
-      <section class="slide" id="slide-2" data-theme="light" data-label="O problema atual" role="group" aria-roledescription="slide" aria-label="2 de 7" aria-labelledby="title-2" aria-hidden="true" inert>
+      <section class="slide" id="slide-2" data-theme="light" data-label="O problema atual" role="group" aria-roledescription="slide" aria-label="2 de 6" aria-labelledby="title-2" aria-hidden="true" inert>
         <div class="slide-inner">
           <header><p class="eyebrow">O problema atual</p><h2 id="title-2" tabindex="-1">Quando a nota chega,<br>a dificuldade já avançou</h2><p class="intro">Entre a aula e a avaliação, a escola perde sinais que poderiam orientar uma intervenção.</p></header>
           <div class="three-col">
@@ -337,7 +338,7 @@
         </div>
       </section>
 
-      <section class="slide" id="slide-3" data-theme="light" data-label="Nosso ecossistema" role="group" aria-roledescription="slide" aria-label="3 de 7" aria-labelledby="title-3" aria-hidden="true" inert>
+      <section class="slide" id="slide-3" data-theme="light" data-label="Nosso ecossistema" role="group" aria-roledescription="slide" aria-label="3 de 6" aria-labelledby="title-3" aria-hidden="true" inert>
         <div class="slide-inner">
           <header><p class="eyebrow">A solução</p><h2 id="title-3" tabindex="-1">Uma aula. Três visões conectadas.</h2><p class="intro">Cada resposta do aluno ajuda a definir o que revisar e onde a escola deve atuar.</p></header>
           <div class="ecosystem">
@@ -365,7 +366,7 @@
         </div>
       </section>
 
-      <section class="slide" id="slide-4" data-theme="light" data-label="Embasamento científico" role="group" aria-roledescription="slide" aria-label="4 de 7" aria-labelledby="title-4" aria-hidden="true" inert>
+      <section class="slide" id="slide-4" data-theme="light" data-label="Embasamento científico" role="group" aria-roledescription="slide" aria-label="4 de 6" aria-labelledby="title-4" aria-hidden="true" inert>
         <div class="slide-inner">
           <header><p class="eyebrow">Embasamento científico</p><h2 id="title-4" tabindex="-1">Ciência da aprendizagem<br>por trás de cada interação</h2><p class="intro">A gamificação dá forma a uma ferramenta pedagógica de prática e diagnóstico contínuos.</p></header>
           <div class="three-col science-grid">
@@ -377,17 +378,17 @@
         </div>
       </section>
 
-      <section class="slide" id="slide-5" data-theme="light" data-label="Retorno para a escola" role="group" aria-roledescription="slide" aria-label="5 de 7" aria-labelledby="title-5" aria-hidden="true" inert>
+      <section class="slide" id="slide-5" data-theme="light" data-label="Retorno para a escola" role="group" aria-roledescription="slide" aria-label="5 de 6" aria-labelledby="title-5" aria-hidden="true" inert>
         <div class="slide-inner">
-          <header><p class="eyebrow">Retorno para a escola</p><h2 id="title-5" tabindex="-1">Valor pedagógico com<br>indicadores de negócio</h2></header>
+          <header><p class="eyebrow">Retorno para a escola</p><h2 id="title-5" tabindex="-1">Quatro retornos para a escola</h2></header>
           <div class="roi-grid">
-            <p class="roi-statement">Uma proposta de valor que a escola consegue <span>demonstrar e medir.</span></p>
             <table class="roi-table" aria-label="Benefícios esperados e indicadores de retorno">
               <thead><tr><th scope="col">Retorno esperado</th><th scope="col">Como acompanhar</th></tr></thead>
               <tbody>
                 <tr><td><strong>Atrair e reter matrículas</strong><p>Diferencial de marketing com acompanhamento visível do aprendizado. Identificação precoce do desengajamento para apoiar a permanência.</p></td><td>Conversão de matrículas, rematrículas e evasão ao longo do ciclo letivo.</td></tr>
                 <tr><td><strong>Melhorar o desempenho</strong><p>Prática consistente e retomadas por habilidade para fortalecer a preparação para o ENEM e os vestibulares.</p></td><td>Evolução em provas e simulados comparáveis, por habilidade e turma.</td></tr>
                 <tr><td><strong>Devolver tempo ao professor</strong><p>Correção automática de diagnósticos objetivos e reaproveitamento de questões para ampliar o tempo dedicado às intervenções.</p></td><td>Horas de preparação e correção antes e depois da adoção.</td></tr>
+                <tr><td><strong>Centralizar pontos e premiações</strong><p>A escola gera QR codes para registrar e somar automaticamente pontos de eventos, gincanas e notas. O sistema organiza os saldos e as premiações conforme as regras da instituição.</p></td><td>Tempo de apuração, registros de pontos e premiações por aluno e turma.</td></tr>
               </tbody>
             </table>
           </div>
@@ -395,7 +396,7 @@
         </div>
       </section>
 
-      <section class="slide" id="slide-6" data-theme="light" data-label="Implementação em 6 meses" role="group" aria-roledescription="slide" aria-label="6 de 7" aria-labelledby="title-6" aria-hidden="true" inert>
+      <section class="slide" id="slide-6" data-theme="light" data-label="Implementação em 6 meses" role="group" aria-roledescription="slide" aria-label="6 de 6" aria-labelledby="title-6" aria-hidden="true" inert>
         <div class="slide-inner">
           <header><p class="eyebrow">Cronograma de implementação</p><h2 id="title-6" tabindex="-1">Seis meses. Uma adoção acompanhada.</h2><p class="intro">Um piloto em duas turmas prepara a expansão e estabelece a base para medir impacto.</p></header>
           <ol class="timeline">
@@ -410,18 +411,10 @@
         </div>
       </section>
 
-      <section class="slide" id="slide-7" data-theme="dark" data-label="O próximo passo" role="group" aria-roledescription="slide" aria-label="7 de 7" aria-labelledby="title-7" aria-hidden="true" inert>
-        <div class="slide-inner">
-          <div class="cta-grid">
-            <div class="cta-copy"><p class="eyebrow">O próximo passo</p><h2 id="title-7" tabindex="-1">A próxima prova<br>pode chegar com<br><span class="accent">menos surpresas.</span></h2><p class="intro">Nosso convite é começar pelo Mês 1: ouvir a comunidade escolar e desenhar um diagnóstico que faça sentido para a sua realidade.</p><button class="primary" id="open-invite" type="button">Preparar o início do Mês 1 <span aria-hidden="true">↗</span></button><p class="commitment">Proposta de início sem compromisso de expansão. Escopo, responsabilidades e condições acordados antes da execução.</p></div>
-            <aside class="start-plan"><p class="eyebrow">Primeira etapa</p><h3>Um começo seguro,<br>com decisão ao final.</h3><ol><li>Indicar um responsável da direção ou coordenação.</li><li>Alinhar questionários e selecionar as duas turmas candidatas ao piloto.</li><li>Definir critérios de sucesso e aprovar o plano antes de avançar.</li></ol><address class="contacts"><p class="label">Contato do projeto</p><strong>José Cláudio</strong><p><a href="mailto:ramos.filho@unesp.br?subject=ExternApp%20%7C%20Diagn%C3%B3stico%20inicial">ramos.filho@unesp.br</a><br><a href="https://wa.me/5519999733281" target="_blank" rel="noopener noreferrer" aria-label="Conversar com José Cláudio pelo WhatsApp, 19 99973-3281">WhatsApp: (19) 99973-3281 ↗</a></p></address></aside>
-          </div>
-        </div>
-      </section>
     </main>
 
     <footer class="controls">
-      <div class="progress" role="progressbar" aria-label="Progresso da apresentação" aria-valuemin="1" aria-valuemax="7" aria-valuenow="1"><span id="progress-fill"></span></div>
+      <div class="progress" role="progressbar" aria-label="Progresso da apresentação" aria-valuemin="1" aria-valuemax="6" aria-valuenow="1"><span id="progress-fill"></span></div>
       <p class="slide-label" id="slide-label">A proposta</p>
       <nav class="pagination" aria-label="Escolher slide">
         <button class="dot" type="button" data-slide="0" aria-label="Slide 1: A proposta" aria-current="step"></button>
@@ -430,10 +423,9 @@
         <button class="dot" type="button" data-slide="3" aria-label="Slide 4: Embasamento científico"></button>
         <button class="dot" type="button" data-slide="4" aria-label="Slide 5: Retorno para a escola"></button>
         <button class="dot" type="button" data-slide="5" aria-label="Slide 6: Implementação em 6 meses"></button>
-        <button class="dot" type="button" data-slide="6" aria-label="Slide 7: O próximo passo"></button>
       </nav>
       <nav class="nav-actions" aria-label="Navegação da apresentação">
-        <span class="counter" id="counter" aria-hidden="true">01 / 07</span>
+        <span class="counter" id="counter" aria-hidden="true">01 / 06</span>
         <button class="nav-btn" id="prev" type="button" aria-keyshortcuts="ArrowLeft" disabled><span aria-hidden="true">←</span> Anterior</button>
         <button class="nav-btn" id="next" type="button" aria-keyshortcuts="ArrowRight">Próximo <span aria-hidden="true">→</span></button>
       </nav>
@@ -441,15 +433,8 @@
   </div>
   <p class="sr-only" id="announcement" aria-live="polite" aria-atomic="true"></p>
 
-  <dialog id="invite-dialog" aria-labelledby="invite-title" aria-describedby="invite-description">
-    <p class="eyebrow">Conversa inicial</p><h2 id="invite-title">O primeiro passo pode ser uma mensagem.</h2>
-    <p id="invite-description">Fale com José Cláudio para alinhar o diagnóstico: <a href="mailto:ramos.filho@unesp.br?subject=ExternApp%20%7C%20Diagn%C3%B3stico%20inicial">ramos.filho@unesp.br</a> ou <a href="https://wa.me/5519999733281" target="_blank" rel="noopener noreferrer">WhatsApp (19) 99973-3281</a>. Você também pode copiar o convite abaixo.</p>
-    <p class="message" id="invite-message" tabindex="0">Gostaria de alinhar o Mês 1 do ExternApp na nossa escola. Vamos definir o responsável pedagógico, os questionários com alunos e professores, as duas turmas candidatas ao piloto e os critérios de sucesso. Também queremos acordar escopo, responsabilidades e condições antes de iniciar, com decisão de continuidade ao final do diagnóstico.</p>
-    <div class="dialog-actions"><button class="primary" type="button" id="copy-invite">Copiar mensagem</button><button class="nav-btn" type="button" id="close-invite" autofocus>Fechar</button></div>
-    <p id="copy-status" role="status" aria-live="polite"></p>
-  </dialog>
 
-  <noscript><p style="position:fixed;bottom:0;left:0;z-index:10;background:#102c40;color:white;padding:12px;font:14px Arial">Ative o JavaScript para navegar pelos sete slides desta apresentação.</p></noscript>
+  <noscript><p style="position:fixed;bottom:0;left:0;z-index:10;background:#102c40;color:white;padding:12px;font:14px Arial">Ative o JavaScript para navegar pelos seis slides desta apresentação.</p></noscript>
 
   <script>
     (() => {
@@ -464,11 +449,10 @@
       const progress = document.querySelector('.progress');
       const fill = document.getElementById('progress-fill');
       const announcement = document.getElementById('announcement');
-      const dialog = document.getElementById('invite-dialog');
       let current = -1;
 
       function indexFromHash() {
-        const match = /^#slide-([1-7])$/.exec(window.location.hash);
+        const match = /^#slide-([1-9]\d*)$/.exec(window.location.hash);
         return match ? Number(match[1]) - 1 : 0;
       }
 
@@ -510,7 +494,7 @@
       window.addEventListener('hashchange', () => goTo(indexFromHash(), { updateHash: false }));
 
       document.addEventListener('keydown', event => {
-        if (dialog.open || event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey) return;
+        if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey) return;
         if (event.target.closest('input, textarea, select, [contenteditable="true"]')) return;
         let target;
         if (event.key === 'ArrowRight' || event.key === 'PageDown') target = current + 1;
@@ -519,27 +503,6 @@
         else if (event.key === 'End') target = slides.length - 1;
         else if (event.key === ' ' && !event.target.closest('button, a')) target = current + (event.shiftKey ? -1 : 1);
         if (target !== undefined) { event.preventDefault(); goTo(target); }
-      });
-
-      document.getElementById('open-invite').addEventListener('click', () => {
-        document.getElementById('copy-status').textContent = '';
-        dialog.showModal();
-      });
-      document.getElementById('close-invite').addEventListener('click', () => dialog.close());
-      document.getElementById('copy-invite').addEventListener('click', async () => {
-        const message = document.getElementById('invite-message');
-        const status = document.getElementById('copy-status');
-        try {
-          if (!navigator.clipboard || !window.isSecureContext) throw new Error('Clipboard unavailable');
-          await navigator.clipboard.writeText(message.textContent.trim());
-          status.textContent = 'Mensagem copiada. Envie pelo canal de contato da equipe.';
-        } catch {
-          const range = document.createRange();
-          range.selectNodeContents(message);
-          const selection = window.getSelection();
-          selection.removeAllRanges(); selection.addRange(range); message.focus();
-          status.textContent = 'Selecione e copie o texto acima pelo menu do dispositivo ou com Ctrl+C / ⌘C.';
-        }
       });
 
       goTo(indexFromHash(), { updateHash: false, announce: false });

@@ -4,7 +4,7 @@ Apresentação institucional do ExternApp, aplicação educacional do projeto Ho
 
 ## Apresentação
 
-Os sete slides estão em `dist/index.html`, um único arquivo HTML com CSS e JavaScript incorporados. Basta abrir o arquivo no navegador.
+Os seis slides estão em `dist/index.html`, um único arquivo HTML com CSS e JavaScript incorporados. Basta abrir o arquivo no navegador.
 
 - Navegação pelos botões Anterior e Próximo ou pelas setas do teclado.
 - Atalhos Home e End para o primeiro e o último slide.
