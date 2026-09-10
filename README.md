@@ -15,7 +15,11 @@ A fonte Inter é carregada pelo Google Fonts quando há conexão. O restante da 
 
 ## Hospedagem
 
-Site estático com diretório de publicação `dist/`. A configuração de Sites fica em `.openai/hosting.json`.
+Site estático com diretório de publicação `dist/`.
+
+O fluxo `.github/workflows/deploy-pages.yml` publica esse diretório no GitHub Pages quando há alterações na apresentação na branch `main`. No repositório, a origem do Pages deve ser configurada como GitHub Actions. O fluxo também permite execução manual pela aba Actions.
+
+A configuração da hospedagem anterior em Sites permanece em `.openai/hosting.json`.
 
 ## Contato
 
